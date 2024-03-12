@@ -1,6 +1,12 @@
-
+import { UserButton } from "@clerk/nextjs";
+ 
 export default function Home() {
   return (
-<h1>This is a protected route.</h1>
-    );
+    <>
+      <header>
+        <UserButton />
+      </header>
+      <div>Your home page content can go here.</div>
+    </>
+  );
 }
