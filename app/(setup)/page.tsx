@@ -23,7 +23,7 @@ and load it immediately for user for channel(general)
   });
 
   if(server){
-   return redirect(`/server/${server.id}`);
+   return redirect(`/servers/${server.id}`);
   }
   
   return <InitialModal/>;
