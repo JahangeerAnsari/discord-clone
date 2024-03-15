@@ -5,6 +5,7 @@ import {cn} from '@/lib/utils'
 const fontOpenSans = Open_Sans({ subsets: ["latin"] });
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ModalProvider } from "@/components/providers/modal-provider";
 
 export const metadata: Metadata = {
   title: "Team Chat Application",
@@ -28,6 +29,7 @@ export default function RootLayout({
             enableSystem={false}
             storageKey="discord-theme"
           >
+            <ModalProvider/>
             {children}
           </ThemeProvider>
         </body>

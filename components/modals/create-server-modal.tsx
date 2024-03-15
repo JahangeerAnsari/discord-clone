@@ -1,5 +1,4 @@
 "use client";
-import { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -28,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useModal } from "@/hooks/use-modal-store";
 // form schema
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -38,12 +38,10 @@ const formSchema = z.object({
   }),
 });
 
-export const InitialModal = () => {
- const [isMounted, setIsMounted] = useState(false)
-  const router = useRouter()
- useEffect(() =>{
-setIsMounted(true);
- },[])
+export const CreateServerModal = () => {
+  const {isOpen,onClose,type} = useModal()
+  const router = useRouter();
+  const isModalOpen = isOpen && type === "createServer"
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -55,24 +53,23 @@ setIsMounted(true);
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.post("/api/servers",values);
-     
+      await axios.post("/api/servers", values);
+
       form.reset();
       router.refresh();
-      window.location.reload();
-      
-      
+
+      onClose()
     } catch (error) {
-     console.log("error on server",error);
-      
+      console.log("error on server", error);
     }
   };
-
-  if(!isMounted){
-   return null;
+  const handleCloseModal = () => {
+    form.reset();
+    onClose()
   }
+
   return (
-    <Dialog open>
+    <Dialog open={isModalOpen} onOpenChange={handleCloseModal}>
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
@@ -90,21 +87,21 @@ setIsMounted(true);
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
-               <FormField
-               control={form.control}
-               name="imageUrl"
-               render={({field}) =>(
-                <FormItem>
-                  <FormControl>
-                   <FileUpload 
-                   endpoint="serverImage"
-                   value={field.value}
-                   onChange={field.onChange}
-                   />
-                  </FormControl>
-                </FormItem>
-               )}
-               />
+                <FormField
+                  control={form.control}
+                  name="imageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endpoint="serverImage"
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
               </div>
               <FormField
                 control={form.control}
@@ -128,14 +125,14 @@ setIsMounted(true);
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage/>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
               <Button variant="primary" disabled={isLoading}>
-               Create
+                Create
               </Button>
             </DialogFooter>
           </form>

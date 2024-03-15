@@ -35,6 +35,7 @@ export const NavigationItem = ({ id, name, imageUrl }: NavigationItemProps) => {
           )}
         >
           <Image fill src={imageUrl} alt="channel" />
+          
         </div>
       </button>
     </ActionTooltip>

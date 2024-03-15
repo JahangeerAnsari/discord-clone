@@ -5,7 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button"
+
 interface ActionTooltipProps {
   label: string;
   children: React.ReactNode;
@@ -32,17 +32,6 @@ export const ActionTooltip = ({
 
 
 
-   // <TooltipProvider>
-   //   <Tooltip delayDuration={50}>
-   //     <TooltipTrigger asChild>
-   //       {children}
-   //     </TooltipTrigger>
-   //     <TooltipContent side={side} align={align}>
-   //       <p className="font-semibold text-sm capitalize">
-   //         {label.toLowerCase()}
-   //       </p>
-   //     </TooltipContent>
-   //   </Tooltip>
-   // </TooltipProvider>
+   
  )
 }
