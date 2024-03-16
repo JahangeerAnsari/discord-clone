@@ -9,12 +9,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
+import { useModal } from "@/hooks/use-modal-store";
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfiles;
   role?: MemberRole;
 }
 const ServerHeader = ({ server, role }: ServerHeaderProps) => {
-  const isAdmin = role === MemberRole.ADMIN;
+  const {onOpen } = useModal()
+   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
   return (
     <DropdownMenu>
@@ -37,6 +39,8 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
       >
         {isModerator && (
           <DropdownMenuItem
+            //  2nd params is data
+          onClick={() => onOpen("invite",{server})}
             className="text-indigo-600 dark:text-indigo-400
         px-3 py-2 text-sm cursor-pointer flex
         "
