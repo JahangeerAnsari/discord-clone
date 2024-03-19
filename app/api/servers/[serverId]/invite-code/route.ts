@@ -18,7 +18,7 @@ export async function PATCH(req:Request,
   if(!serverId){
    return new NextResponse("Server ID missing", {status:400})
   }
-
+//here only admin has ability to invite link facilities
   const server = await db.server.update({
    where:{
 id:serverId,
