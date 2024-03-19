@@ -7,7 +7,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDownIcon, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react";
+import {
+  ChevronDownIcon,
+  LogOut,
+  PlusCircle,
+  Settings,
+  Trash,
+  UserPlus,
+  Users,
+} from "lucide-react";
 import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu";
 import { useModal } from "@/hooks/use-modal-store";
 interface ServerHeaderProps {
@@ -15,8 +23,8 @@ interface ServerHeaderProps {
   role?: MemberRole;
 }
 const ServerHeader = ({ server, role }: ServerHeaderProps) => {
-  const {onOpen } = useModal()
-   const isAdmin = role === MemberRole.ADMIN;
+  const { onOpen } = useModal();
+  const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
   return (
     <DropdownMenu>
@@ -40,7 +48,7 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         {isModerator && (
           <DropdownMenuItem
             //  2nd params is data
-          onClick={() => onOpen("invite",{server})}
+            onClick={() => onOpen("invite", { server })}
             className="text-indigo-600 dark:text-indigo-400
         px-3 py-2 text-sm cursor-pointer flex
         "
@@ -52,7 +60,7 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
 
         {isAdmin && (
           <DropdownMenuItem
-          onClick={() => onOpen("editServer",{server})}
+            onClick={() => onOpen("editServer", { server })}
             className="px-3 py-2 text-sm cursor-pointer flex
         "
           >
@@ -62,10 +70,12 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
         )}
         {isAdmin && (
           <DropdownMenuItem
+            onClick={() => onOpen("members", { server })}
             className="px-3 py-2 text-sm cursor-pointer flex
+            
         "
           >
-             Manage Members
+            Manage Members
             <Users className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
@@ -78,15 +88,13 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
             <PlusCircle className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
-       {isModerator && (
-         <DropdownMenuSeparator/>
-       )}
-       {isAdmin && (
+        {isModerator && <DropdownMenuSeparator />}
+        {isAdmin && (
           <DropdownMenuItem
             className="text-rose-500 px-3 py-2 text-sm cursor-pointer flex
         "
           >
-           Delete Server
+            Delete Server
             <Trash className="h-4 w-4 ml-auto" />
           </DropdownMenuItem>
         )}
