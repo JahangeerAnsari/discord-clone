@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import {
   Command,
@@ -28,6 +28,19 @@ interface ServerSearchProps {
 }
 export const ServerSearch = ({ data }: ServerSearchProps) => {
   const [open, setOpen] = useState(false);
+
+  // onPress Ctr key open Search box
+  useEffect(() =>{
+const down = (e: KeyboardEvent) =>{
+ if(e.key ==="k" && (e.metaKey || e.ctrlKey)){
+  e.preventDefault();
+  setOpen((open) => !open)
+ } 
+}
+document.addEventListener("keydown",down);
+// on unmount case
+return () => document.removeEventListener("keydown",down)
+   },[])
   return (
     <>
       <button
