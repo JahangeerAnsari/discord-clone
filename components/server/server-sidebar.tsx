@@ -49,29 +49,20 @@ export const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
         },
         orderBy: {
           role: "asc",
-        },
-      },
-    },
+        }
+      }
+    }
   });
-  const textChannels = server?.channels.filter(
-    (channel) => channel.type === ChannelType.TEXT
-  );
-  const audioChannels = server?.channels.filter(
-    (channel) => channel.type === ChannelType.AUDIO
-  );
-  const videoChannels = server?.channels.filter(
-    (channel) => channel.type === ChannelType.VIDEO
-  );
-  const members = server?.members.filter(
-    (member) => member.profileId !== profile.id
-  );
+
+  const textChannels = await server?.channels.filter((channel) => channel.type === ChannelType.TEXT)
+  const audioChannels = await server?.channels.filter((channel) => channel.type === ChannelType.AUDIO)
+  const videoChannels = await server?.channels.filter((channel) => channel.type === ChannelType.VIDEO)
+  const members = server?.members.filter((member) => member.profileId !== profile.id)
 
   if (!server) {
     return redirect("/");
   }
-  const role = server?.members.find(
-    (member) => member.profileId === profile.id
-  )?.role;
+  const role = server.members.find((member) => member.profileId === profile.id)?.role;
 
   return (
     <div
