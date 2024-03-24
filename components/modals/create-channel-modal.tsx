@@ -35,6 +35,7 @@ import {
 import { useModal } from "@/hooks/use-modal-store";
 import { type } from "os";
 import { ChannelType } from "@prisma/client";
+import { useEffect } from "react";
 // form schema
 const formSchema = z.object({
   name: z
@@ -52,19 +53,30 @@ const formSchema = z.object({
 });
 
 export const CreateChannelModal = () => {
-  const { isOpen, onClose, type } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
   const params = useParams();
   console.log("params",params);
+  const {channelType} = data
   
   const isModalOpen = isOpen && type === "createChannel";
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT,
+      type: channelType || ChannelType.TEXT,
     },
   });
+
+  // set channel type default if it is audion then audio or video
+  // then video
+  useEffect(() =>{
+    if(channelType){
+      form.setValue("type", channelType);
+    }else{
+      form.setValue("type",   ChannelType.TEXT);
+    }
+  },[channelType, form])
   // extract loading state from form
   const isLoading = form.formState.isSubmitting;
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
