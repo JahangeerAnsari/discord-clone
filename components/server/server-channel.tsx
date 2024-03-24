@@ -3,10 +3,10 @@
 import { cn } from "@/lib/utils";
 import { ChannelType, Channel, MemberRole, Server } from "@prisma/client";
 import { Edit, Hash, Lock, Mic, Trash, Video } from "lucide-react";
-import { useParams } from "next/navigation";
+import { useParams,useRouter } from "next/navigation";
 
 import { ActionTooltip } from "@/components/action-tooltip";
-import { useModal } from "@/hooks/use-modal-store";
+import { ModalType, useModal } from "@/hooks/use-modal-store";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -26,9 +26,20 @@ export const ServerChannel = ({
   const {onOpen} = useModal()
   const Icon = iconMap[channel.type];
   const params = useParams();
+  const router = useRouter();
+  const redirectToConversation = () =>{
+    router.push(`/servers/${params.serverId}/channels/${channel.id}`)
+  }
+  // it will stop the redirection  to converation page
+  // it will stop the redirection
+  // it will perform action edit or delete on same button
+  const onActionEditDelete = (e:React.MouseEvent, action:ModalType) =>{
+   e.stopPropagation();
+   onOpen(action,{channel,server})
+  }
   return (
     <button
-      onClick={() => {}}
+      onClick={redirectToConversation}
       className={cn(
         "group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1 ",
         params.channelId === channel.id && "bg-zinc-700/20 dark:bg-zinc-700"
@@ -48,7 +59,7 @@ export const ServerChannel = ({
         <div className="ml-auto flex items-center gap-x-2">
           <ActionTooltip label="Edit">
             <Edit
-            onClick={() => onOpen("editChannel",{server,channel}) }
+            onClick={(e) => onActionEditDelete(e,"editChannel") }
               className="
           hidden group-hover:block w-4 h-4  text-zinc-500
           hover:text-zinc-600 dark:text-zinc-400
@@ -58,7 +69,7 @@ export const ServerChannel = ({
           </ActionTooltip>
           <ActionTooltip label="Delete">
             <Trash
-            onClick={() => onOpen("deleteChannel",{server,channel})}
+            onClick={(e) => onActionEditDelete(e,"deleteChannel")}
               className="
           hidden group-hover:block w-4 h-4  text-zinc-500
           hover:text-zinc-600 dark:text-zinc-400
