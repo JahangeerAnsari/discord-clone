@@ -1,46 +1,73 @@
 import { ChatHeader } from "@/components/chat/chat-header";
+import { ChatInput } from "@/components/chat/chat-input";
+import { ChatMessages } from "@/components/chat/chat-messages";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-interface ChannelIdPageProps{
- params:{
-  serverId:string;
-  channelId:string;
- }
+interface ChannelIdPageProps {
+  params: {
+    serverId: string;
+    channelId: string;
+  };
 }
 
-const ChannelIdPage = async ({params}:ChannelIdPageProps) => {
- const profile = await currentProfile();  
- if(!profile) return redirectToSignIn();
-//  find the channel
-const channel = await db.channel.findUnique({
-  where:{
-    id:params.channelId
+const ChannelIdPage = async ({ params }: ChannelIdPageProps) => {
+  const profile = await currentProfile();
+  if (!profile) return redirectToSignIn();
+  //  find the channel
+  const channel = await db.channel.findUnique({
+    where: {
+      id: params.channelId,
+    },
+  });
+  // find the first member in the server which profile id is profileId
+  // there are many members but we want the profileId one
+  const member = await db.member?.findFirst({
+    where: {
+      serverId: params.serverId,
+      profileId: profile.id,
+    },
+  });
+  if (!channel || !member) {
+    redirect("/");
   }
-})
-// find the first member in the server which profile id is profileId
-// there are many members but we want the profileId one
-const member = await db.member.findFirst({
-  where:{
-    serverId:params.serverId,
-    profileId:profile.id
-  }
-})
-if(!channel || !member){
-  redirect("/")
-}
-  
+
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
-     <ChatHeader
-     name={channel.name}
-     serverId={channel.serverId}
-     type="channel"
-     />
-    </div>
-  )
-}
+      <ChatHeader
+        name={channel.name}
+        serverId={channel.serverId}
+        type="channel"
+      />
+      <ChatMessages
+      member={member}
+      chatId={channel.id}
+      name={channel.name}
+      type="channel"
+      apiUrl="/api/messages"
+      socketUrl="/api/socket/messages"
+      socketQuery={{
+        channelId:channel.id,
+        serverId:channel.serverId
+      }}
+      paramKey="channelId"
+      paramValue={channel.id}
 
-export default ChannelIdPage
+      />
+      <div className="flex-1"></div>
+      <ChatInput
+      name={channel.name}
+      type="channel"
+      apiUrl="/api/socket/messages"
+      query={{
+        channelId: channel.id,
+        serverId: channel.serverId
+      }}
+      />
+    </div>
+  );
+};
+
+export default ChannelIdPage;
