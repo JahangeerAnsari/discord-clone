@@ -7,6 +7,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import ToastProvider from "@/components/providers/ToastProvider";
+import ModalProvider from "@/components/providers/modal-provider";
 
 export const metadata: Metadata = {
   title: "Team Chat Application",
@@ -25,6 +26,7 @@ export default function RootLayout({
           cn(fontOpenSans.className,'bg-white dark:bg-[#313338]')
         }>
           <ToastProvider/>
+          <ModalProvider/>
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
