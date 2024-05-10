@@ -6,6 +6,8 @@ import {db} from '@/lib/db'
 // now we can get ever-where is current user and
 export  const currentProfile = async () =>{
   const {userId} = auth();
+  console.log("userId@@@@@@@@@@@@@@@@@@@@@@@@@@", userId);
+  
   if(!userId){
    return null;
   }
