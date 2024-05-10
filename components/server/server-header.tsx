@@ -1,4 +1,4 @@
-"ise client";
+"use client";
 
 import { ServerWithMembersWithProfile } from "@/types";
 import { MemberRole } from "@prisma/client";
@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, LogOut, PlusCircle, Settings, Trash, UserPlus, Users } from "lucide-react";
+import { useModal } from "@/app/hooks/use-modal-store";
 
 interface ServerHeaderProps {
   server: ServerWithMembersWithProfile;
@@ -18,6 +19,7 @@ interface ServerHeaderProps {
 const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
+  const {onOpen} = useModal()
 
   return (
     <DropdownMenu>
@@ -41,6 +43,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
         {/* only admin or moderators  can invite peoplw*/}
         {isModerator && (
           <DropdownMenuItem
+          onClick={() =>onOpen("invite",{server})}
             className="
               text-indigo-600 dark:text-indigo-400
               px-3 py-2 text-sm cursor-pointer
