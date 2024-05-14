@@ -74,6 +74,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
         )}
         {isModerator && (
           <DropdownMenuItem
+          onClick={() =>onOpen("createChannel",{server})}
           className="px-3 py-2 text-sm cursor-pointer
               ">
             Create Channel
@@ -85,6 +86,7 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
         }
         {isAdmin && (
           <DropdownMenuItem
+          onClick={() =>onOpen("deleteServer",{server})}
           className="
           text-rose-500
           px-3 py-2 text-sm cursor-pointer
@@ -99,7 +101,9 @@ const ServerHeader: React.FC<ServerHeaderProps> = ({ server, role }) => {
           className="
           text-rose-500
           px-3 py-2 text-sm cursor-pointer
-              ">
+              " 
+              onClick={() =>onOpen("leaveServer",{server})}
+              >
                Leave Channel
             <LogOut
              className="w-4 h-4 ml-auto" />

@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import InvitePeopleModal from "../modals/invite-modal";
 import EditServerModal from "../modals/edit-server-modal";
 import MembersModal from "../modals/members-modal";
+import CreateChannelModal from "../modals/create-channel-modal";
+import LeaveServerModal from "../modals/leave-server-modal";
+import DeleteServerModal from "../modals/delete-server";
 
 
 const ModalProvider = () => {
@@ -18,6 +21,9 @@ const ModalProvider = () => {
  }
  return ( 
   <>
+  <DeleteServerModal/>
+  <LeaveServerModal/>
+  <CreateChannelModal/>
   <CreateServerModal/>
   <InvitePeopleModal/>
   <EditServerModal/>

@@ -29,10 +29,10 @@ profileId:profile.id
 })
 return NextResponse.json(server)
 } catch (error) {
- console.log("EEEEEEEEEEEEEEEEEEEE",error);
+ console.log("",error);
  
 console.log("[SERVER_ID]", error);
-return new NextResponse("Internal Server Error ddddddddddddddddddddddddddddd",{status:500})
+return new NextResponse("Internal Server Error ",{status:500})
 }
 
 }
