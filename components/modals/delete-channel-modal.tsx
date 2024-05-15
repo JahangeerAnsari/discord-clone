@@ -7,27 +7,35 @@ import {
   DialogHeader,
   DialogFooter,
 } from "@/components/ui/dialog";
+import qs from 'query-string'
 import { useModal } from "@/app/hooks/use-modal-store";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter,useParams } from "next/navigation";
 
-const DeleteServerModal = () => {
+const DeleteChannelModal = () => {
   const { isOpen, onClose, type, data } = useModal();
   const router = useRouter();
+  const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
-  const { server } = data ;
-  const isModalOpen = isOpen && type === "deleteServer";
-  const onServerDelete = async () => {
+  const { server,channel } = data ;
+  const isModalOpen = isOpen && type === "deleteChannel";
+  const onChannelDelete = async () => {
     try {
       setIsLoading(true);
-      await axios.delete(`/api/servers/${server?.id}`);
+      const url = qs.stringifyUrl({
+        url:`/api/channels/${channel?.id}`,
+        query:{
+          serverId:params?.serverId,
+        }
+      })
+      await axios.delete(url);
       onClose();
+      toast.success("Channel has been Remove!");
+      router.push(`/servers/${params?.serverId}`);
       router.refresh();
-      toast.success("Server has been deleted!");
-      router.push("/");
     } catch (error: any) {
       toast.error(error);
     } finally {
@@ -40,11 +48,11 @@ const DeleteServerModal = () => {
       <DialogContent className="bg-white text-black p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl text-center font-bold">
-            Delete Server
+            Delete Channel 
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500 ">
             Are you sure you want to do this? <br/>
-            <span className="text-indigo-500 font-semibold"> {server?.name}</span> will permanently deleted.!
+            <span className="text-indigo-500 font-semibold">#{channel?.name}</span> will permanently deleted.!
            
           </DialogDescription>
         </DialogHeader>
@@ -55,7 +63,7 @@ const DeleteServerModal = () => {
             </Button>
             <Button
               disabled={isLoading}
-              onClick={onServerDelete}
+              onClick={onChannelDelete}
               variant="primary"
             >
               Confirm
@@ -67,4 +75,4 @@ const DeleteServerModal = () => {
   );
 };
 
-export default DeleteServerModal;
+export default DeleteChannelModal;
