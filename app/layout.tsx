@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import ToastProvider from "@/components/providers/ToastProvider";
 import ModalProvider from "@/components/providers/modal-provider";
+import { SocketProvider } from "@/components/providers/socket-provider";
 
 export const metadata: Metadata = {
   title: "Team Chat Application",
@@ -21,23 +22,24 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-       <html lang="en" suppressHydrationWarning>
-        <body className={
-          cn(fontOpenSans.className,'bg-white dark:bg-[#313338]')
-        }>
-          <ToastProvider/>
-          <ModalProvider/>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={cn(fontOpenSans.className, "bg-white dark:bg-[#313338]")}
+        >
+          <ToastProvider />
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
             enableSystem={false}
             storageKey="discord-theme"
           >
+            <SocketProvider>
+              <ModalProvider />
 
-          {children}
+              {children}
+            </SocketProvider>
           </ThemeProvider>
-
-          </body>
+        </body>
       </html>
     </ClerkProvider>
   );

@@ -4,13 +4,16 @@ import { create } from "zustand";
 export type ModalType = "createServer" | 
 "invite" | "editServer" | "members" | "createChannel"
 | "leaveServer" |"deleteServer" |"deleteChannel" | "editChannel"
+| "messageFile"
 ;
 interface PassingServerDataToModal {
   server?: Server;
   // deleteChannel for channels 
   channel?: Channel;
   channelType?:ChannelType;
-  
+  // to upload message 
+  apiUrl?: string;
+  query?:Record<string, any>;
 }
 interface ModalStore {
   type: ModalType |null ;
