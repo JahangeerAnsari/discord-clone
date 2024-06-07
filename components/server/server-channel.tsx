@@ -39,7 +39,7 @@ const ServerChannel: React.FC<ServerChannelProps> = ({
       onClick={redirectToPage}
       className={cn(
         "group px-2 py-2 rounded-md flex items-center gap-x-2 w-full hover:bg-zinc-700/10 dark:hover:bg-zinc-700/50 transition mb-1",
-        params.channelId === channel.id && "bg-zinc-700/20"
+        params?.channelId === channel.id && "bg-zinc-700/20"
       )}
     >
       <Icon
