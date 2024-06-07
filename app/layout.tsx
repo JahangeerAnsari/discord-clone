@@ -21,8 +21,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
   return (
-    <ClerkProvider>
+    <ClerkProvider
+    frontendApi={clerkKey}
+    >
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(fontOpenSans.className, "bg-white dark:bg-[#313338]")}
