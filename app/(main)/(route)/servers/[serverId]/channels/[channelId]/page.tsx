@@ -1,9 +1,11 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
 import ChatMessages from "@/components/chat/chat-messages";
+import { MediaRoom } from "@/components/media-room";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
+import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface channelIdProps {
@@ -41,7 +43,9 @@ const ChannelIdPage = async ({ params }: channelIdProps) => {
         serverId={channel.serverId}
         type="channel"
       />
-      <div className="flex-1 overflow-y-auto pb-16 overflow-hidden">
+      {channel.type ===ChannelType.TEXT && (
+        <>
+        <div className="flex-1 overflow-y-auto pb-16 overflow-hidden">
         <ChatMessages
           member={member}
           name={channel.name}
@@ -68,6 +72,26 @@ const ChannelIdPage = async ({ params }: channelIdProps) => {
           }}
         />
       </div>
+        </>
+      )}
+      {
+        channel.type ===ChannelType.AUDIO &&(
+          <MediaRoom
+          chatId={channel.id}
+          video={false}
+          audio={true}
+          />
+        )
+      }
+      {
+        channel.type ===ChannelType.VIDEO &&(
+          <MediaRoom
+          chatId={channel.id}
+          video={true}
+          audio={true}
+          />
+        )
+      }
     </div>
   );
 };
