@@ -25,6 +25,7 @@ export default function RootLayout({
   return (
     <ClerkProvider
     frontendApi={clerkKey}
+    //
     >
       <html lang="en" suppressHydrationWarning>
         <body
